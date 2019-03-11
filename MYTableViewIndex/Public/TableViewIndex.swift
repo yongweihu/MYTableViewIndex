@@ -171,7 +171,9 @@ open class TableViewIndex : UIControl {
     }
     
     private func selectIndex(_ index: Int) {
-        guard index != currentIndex else { return }
+        let shouldSelectItem = delegate!.tableViewIndex!(self, shouldSelect: items[index], at: index)
+        
+        guard index != currentIndex || shouldSelectItem else { return }
         
         currentIndex = index
         
@@ -324,7 +326,8 @@ open class TableViewIndex : UIControl {
         let progress = max(0, min(location.y / indexView.bounds.height, 0.9999))
         let idx = Int(floor(progress * CGFloat(items.count)))
         
-        if idx == currentIndex {
+        let shouldSelectItem = delegate!.tableViewIndex!(self, shouldSelect: items[idx], at: idx)
+        if idx == currentIndex && !shouldSelectItem {
             return
         }
         
@@ -417,6 +420,9 @@ public protocol TableViewIndexDelegate : NSObjectProtocol {
     /// Return true to produce a haptic feedback (iPhone 7 with iOS 10 or later).
     @objc(tableViewIndex:didSelectItem:atIndex:)
     optional func tableViewIndex(_ tableViewIndex: TableViewIndex, didSelect item: UIView, at index: Int) -> Bool
+    
+    @objc(tableViewIndex:shouldSelectItem:atIndex:)
+    optional func tableViewIndex(_ tableViewIndex: TableViewIndex, shouldSelect item: UIView, at index: Int) -> Bool
 }
 
 // MARK: - IB support
