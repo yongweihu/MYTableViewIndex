@@ -14,6 +14,7 @@ MYTableViewIndex is a re-implementation of UITableView section index. This contr
   s.social_media_url = 'https://twitter.com/mindZ_eYe'
 
   s.ios.deployment_target = '8.0'
-
+  s.swift_version = '5.0'
+  
   s.source_files = 'MYTableViewIndex/**/*'
 end
